@@ -1,0 +1,11 @@
+<!-- Indices written at Sun, 27 Apr 2014 23:35:04 MSK -->
+
+<datastore-indexes>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="Group" ancestor="false" source="auto">
+        <property name="groupNum" direction="asc"/>
+        <property name="subgroupNum" direction="asc"/>
+    </datastore-index>
+
+</datastore-indexes>
