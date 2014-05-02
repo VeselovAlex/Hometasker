@@ -7,10 +7,12 @@ import java.util.List;
 import hometasker.data.Hometask;
 import hometasker.data.Student;
 import hometasker.data.StudentHometaskCard;
-import hometasker.data.StudentTaskProgress;
+import hometasker.data.Task;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import com.google.appengine.api.datastore.KeyFactory;
 
 @SuppressWarnings("serial")
@@ -26,7 +28,6 @@ public class StudentServlet extends HttpServlet {
 		
 		resp.getWriter().println("<h2>Hometask progress: </h2><br>");
 		
-		List<StudentHometaskCard> cards = StudentHometaskCard.getByStudentId(id);
 		List<Hometask> hometasks = Hometask.getByGroupId(student.getGroupId());
 		
 		if (hometasks.isEmpty())
@@ -34,26 +35,10 @@ public class StudentServlet extends HttpServlet {
 		else {
 			for (Hometask hometask : hometasks) {
 				
-				String htHeader = "<h3>Hometask" + hometask.getHometaskNum() +": </h3>";
+				String htHeader = "<h3>Hometask" + hometask.getHometaskNum() +":	<a href = \"/updstudentprogress?sid=" + id
+								+"&htid=" + hometask.getKey().getId() + "\">Edit</a></h3>";
 				
-				StudentHometaskCard checkCard = null;
-				for (StudentHometaskCard card : cards) {   //Check that card exists
-					if (card.getHtId() == hometask.getKey().getId())
-						checkCard = card;
-				}
-				
-				if (checkCard == null) {
-					checkCard = new StudentHometaskCard();
-					checkCard.setHtId(hometask.getKey().getId());
-					checkCard.setStudentId(id);
-					checkCard.save();
-				}
-				
-				if (checkCard.getProgress() == null || checkCard.getProgress().isEmpty()) {
-					checkCard.resetProgress();
-				}
-				
-				List<StudentTaskProgress> progressList = checkCard.getProgress();
+				List<Task> tasks = hometask.getAllTasks();	
 				
 				String tableHeader = "<table border = 1 width = 200>"
 						 + "<caption>" + htHeader + "</caption>"
@@ -61,9 +46,23 @@ public class StudentServlet extends HttpServlet {
 				String tableRow = "<tr>";
 				int i = 0;
 				
-				for (StudentTaskProgress progress : progressList) {
+				for (Task task : tasks) {
+					StudentHometaskCard card = StudentHometaskCard.getByStudentAndTask(id, task.getKey().getId());
+					
+					float mark = card.getMark();
+					String cellColor;
+					
+					if (mark < 0)
+						cellColor = "red";
+					else if (mark < 0.25) 
+						cellColor = "lightgrey";
+					else if (mark < 0.75)
+						cellColor = "yellow";
+					else
+						cellColor = "lightgreen";
+					
 					tableHeader += "<th>" + (++i) + "</th>";
-					tableRow += "<td>" + progress.getMark() + "</td>";
+					tableRow += "<td bgcolor=\""+ cellColor + "\">" + mark + "</td>";
 				}
 				
 				resp.getWriter().println(tableHeader + "</tr>" + tableRow + "</tr>");	

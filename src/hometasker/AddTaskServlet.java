@@ -1,13 +1,18 @@
 package hometasker;
 
+import hometasker.data.Hometask;
+import hometasker.data.Student;
+import hometasker.data.StudentHometaskCard;
 import hometasker.data.Task;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Text;
 
 @SuppressWarnings("serial")
@@ -38,7 +43,7 @@ public class AddTaskServlet extends HttpServlet {
 		
 		String ht_id = req.getParameter("htId");
 		task.setHometaskId(new Long(ht_id).longValue());
-		
+
 		Text text = new Text(req.getParameter("task_text"));
 		task.setText(text);
 		
@@ -49,6 +54,17 @@ public class AddTaskServlet extends HttpServlet {
 		task.setFine(is_fine == null ? false : is_fine.equals("on"));
 		
 		task.save();
+		
+		Hometask ht = Hometask.get(KeyFactory.createKey("Hometask", new Long(ht_id).longValue()));
+		List<Student> students = Student.getByGroup(ht.getGroupId());
+		
+		for (Student student : students) {
+			StudentHometaskCard card = new StudentHometaskCard();
+			card.setMark(0.0F);
+			card.setStudentId(student.getKey().getId());
+			card.setTaskId(task.getKey().getId());
+			card.save();
+		}
 		
 		resp.sendRedirect("/hometask?htId=" + ht_id);
 		

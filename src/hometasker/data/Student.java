@@ -3,7 +3,6 @@ package hometasker.data;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -65,10 +64,10 @@ public class Student extends Person {
 		EntityTransaction tr = em.getTransaction();
 		tr.begin();
 		try {
-			em.persist(this);
-			tr.commit();
-		} catch (EntityExistsException e) {
-			em.merge(get(this.getKey()));
+			if (key == null)
+				em.persist(this);
+			else
+				em.merge(this);
 			tr.commit();
 		}
 		finally {

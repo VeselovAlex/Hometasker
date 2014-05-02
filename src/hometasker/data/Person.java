@@ -21,7 +21,7 @@ import com.google.appengine.api.datastore.Key;
 public class Person implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Key key;
+	protected Key key;
 	@Column(nullable = false)
 	private String surname;
 	@Column(nullable = false)

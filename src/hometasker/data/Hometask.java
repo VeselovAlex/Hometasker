@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.GeneratedValue;
@@ -100,10 +99,10 @@ public class Hometask implements Serializable {
 		EntityTransaction tr = em.getTransaction();
 		tr.begin();
 		try {
-			em.persist(this);
-			tr.commit();
-		} catch (EntityExistsException e) {
-			em.merge(get(this.getKey()));
+			if (key == null)
+				em.persist(this);
+			else
+				em.merge(this);
 			tr.commit();
 		}
 		finally {
