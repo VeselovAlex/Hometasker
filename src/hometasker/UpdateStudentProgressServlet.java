@@ -17,6 +17,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 public class UpdateStudentProgressServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
+		resp.getWriter().println("<a href = \"student?id=" + req.getParameter("sid") + "\"> Back to student page </a><br>");
 		long sid = new Long(req.getParameter("sid")).longValue(); 
 		long htid = new Long(req.getParameter("htid")).longValue(); 
 		

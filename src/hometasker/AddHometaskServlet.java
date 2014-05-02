@@ -15,6 +15,7 @@ public class AddHometaskServlet extends HttpServlet {
 			throws IOException {
 		
 		resp.setContentType("text/html");
+		resp.getWriter().println("<a href = \"group?grId=" + req.getParameter("grId") + "\"> Back to group </a><br>");
 		String hometaskHeader = "<h1>Insert new hometask</h1><br><br>";
 		String hometaskFormHTML = "<form action = \"/addhometask\" method = \"post\">"
 						+ "Number: <input type = \"text\" name = \"hometask_num\" value  = 1><br>"

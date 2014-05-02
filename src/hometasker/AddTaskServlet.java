@@ -21,6 +21,7 @@ public class AddTaskServlet extends HttpServlet {
 			throws IOException {
 		
 		resp.setContentType("text/html");
+		resp.getWriter().println("<a href = \"hometask?htId=" + req.getParameter("htId") + "\"> Back to hometask</a><br>");
 		String taskHeader = "<h1>Insert new task</h1><br><br>";
 		String taskFormHTML = "<form action = \"/addtask\" method = \"post\">"
 						+ "Number: <input type = \"text\" name = \"task_num\" value  = 1><br>"

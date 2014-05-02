@@ -1,9 +1,13 @@
 package hometasker;
 
+import hometasker.data.Hometask;
 import hometasker.data.Student;
+import hometasker.data.StudentHometaskCard;
+import hometasker.data.Task;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AddStudentServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
+		resp.getWriter().println("<a href = \"group?grId=" + req.getParameter("grId") + "\"> Back to group </a><br>");
 		String studHeader = "<h1>Insert new student data</h1><br><br>";
 		String studFormHTML = "<form action = \"/addstudent\" method = \"post\">"
 							+ "Surname:     <input type = \"text\" name = \"surname\" value  = \"Surname\"><br>"
@@ -57,6 +62,18 @@ public class AddStudentServlet extends HttpServlet {
 		
 		student.setGroupId(grId);
 		student.save();
+		//Insert pages for home tasks
+		List<Hometask> hometasks = Hometask.getByGroupId(grId);
+		for (Hometask hometask : hometasks) {
+			List<Task> tasks = hometask.getAllTasks();
+			for (Task task : tasks) {
+				StudentHometaskCard card = new StudentHometaskCard();
+				card.setStudentId(student.getKey().getId());
+				card.setTaskId(task.getKey().getId());
+				card.setMark(0.0F);
+				card.save();
+			}
+		}
 		
 		resp.sendRedirect("/group?grId=" + grId);
 	}

@@ -13,6 +13,7 @@ public class AddGroupServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		resp.setContentType("text/html");
+		resp.getWriter().println("<a href = \"groups\"> Back to groups </a><br>");
 		String groupHeader = "<h1>Add group</h1><br><h2>Insert new group data:</h2><br>";
 		String groupFormHTML = "<form action = \"/addgroup\" method = \"post\">"
 						+ "Number: <input type = \"text\" name = \"group_num\"><br>"

@@ -21,9 +21,11 @@ public class StudentServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		resp.setContentType("text/html");
+		
 		long id = new Long(req.getParameter("id")).longValue(); 
 		Student student = Student.get(KeyFactory.createKey("Student", id));
 		
+		resp.getWriter().println("<a href = \"group?grId=" + student.getGroupId() + "\"> Back to group </a><br>");
 		resp.getWriter().println("<h1>Student : " + student.getSurname() + " " + student.getFirstName() + " " + student.getLastName() + "</h1><br>");
 		
 		resp.getWriter().println("<h2>Hometask progress: </h2><br>");

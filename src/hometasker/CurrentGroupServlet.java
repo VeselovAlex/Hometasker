@@ -17,7 +17,8 @@ import com.google.appengine.api.datastore.KeyFactory;
 public class CurrentGroupServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
-		resp.setContentType("text/html");	
+		resp.setContentType("text/html");
+		resp.getWriter().println(HTMLTemplates.pageHeader());
 		long id;
 		try {
 			id = new Long(req.getParameter("grId")).longValue();

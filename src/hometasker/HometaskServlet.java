@@ -19,6 +19,7 @@ public class HometaskServlet extends HttpServlet {
 		resp.setContentType("text/html");
 		long htId = new Long(req.getParameter("htId")).longValue(); 
 		Hometask hometask = Hometask.get(KeyFactory.createKey("Hometask", htId));
+		resp.getWriter().println("<a href = \"group?grId=" + hometask.getGroupId() + "\"> Back to group </a><br>");
 		resp.getWriter().println("<h1>Hometask #" + hometask.getHometaskNum() + "</h1><br>");
 		resp.getWriter().println("<h2>Subject: " + hometask.getSubject() + "</h2><br>");
 		resp.getWriter().println("<h3>Start date / End date : " + hometask.getStartDate() + " / " + hometask.getEndDate() + "</h3><br>");
