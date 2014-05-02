@@ -5,14 +5,6 @@ xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet>
-		<servlet-name>HomeTasker</servlet-name>
-		<servlet-class>hometasker.HomeTaskerServlet</servlet-class>
-	</servlet>
-	<servlet>
-		<servlet-name>Task</servlet-name>
-		<servlet-class>hometasker.TaskServlet</servlet-class>
-	</servlet>
-	<servlet>
 		<servlet-name>Hometask</servlet-name>
 		<servlet-class>hometasker.HometaskServlet</servlet-class>
 	</servlet>
@@ -37,6 +29,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-class>hometasker.AddStudentServlet</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>UpdateStudentProgress</servlet-name>
+		<servlet-class>hometasker.UpdateStudentProgressServlet</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>AddHometask</servlet-name>
 		<servlet-class>hometasker.AddHometaskServlet</servlet-class>
 	</servlet>
@@ -44,14 +40,6 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>AddTask</servlet-name>
 		<servlet-class>hometasker.AddTaskServlet</servlet-class>
 	</servlet>
-	<servlet-mapping>
-		<servlet-name>HomeTasker</servlet-name>
-		<url-pattern>/hometasker</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>Task</servlet-name>
-		<url-pattern>/task</url-pattern>
-	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>Hometask</servlet-name>
 		<url-pattern>/hometask</url-pattern>
@@ -75,6 +63,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet-mapping>
 		<servlet-name>AddStudent</servlet-name>
 		<url-pattern>/addstudent</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>UpdateStudentProgress</servlet-name>
+		<url-pattern>/updstudentprogress</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>AddHometask</servlet-name>
