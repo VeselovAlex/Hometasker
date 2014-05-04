@@ -21,6 +21,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-class>hometasker.StudentServlet</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>Teacher</servlet-name>
+		<servlet-class>hometasker.TeacherServlet</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>Groups</servlet-name>
 		<servlet-class>hometasker.GroupServlet</servlet-class>
 	</servlet>
@@ -63,6 +67,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet-mapping>
 		<servlet-name>Student</servlet-name>
 		<url-pattern>/student</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Teacher</servlet-name>
+		<url-pattern>/teacher</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>Groups</servlet-name>

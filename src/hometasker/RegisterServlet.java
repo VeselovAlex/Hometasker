@@ -1,8 +1,11 @@
 package hometasker;
 
 import hometasker.data.Group;
+import hometasker.data.Hometask;
 import hometasker.data.HometaskerUserService;
 import hometasker.data.Student;
+import hometasker.data.StudentHometaskCard;
+import hometasker.data.Task;
 import hometasker.data.Teacher;
 
 import java.io.IOException;
@@ -86,6 +89,18 @@ public class RegisterServlet extends HttpServlet {
 					student.setNickname(new HometaskerUserService().getUserService().getCurrentUser().getNickname());
 					student.setGroupId(curGroup.getKey().getId());
 					student.save();
+					//Insert pages for home tasks
+					List<Hometask> hometasks = Hometask.getByGroupId(curGroup.getKey().getId());
+					for (Hometask hometask : hometasks) {
+						List<Task> tasks = hometask.getAllTasks();
+						for (Task task : tasks) {
+							StudentHometaskCard card = new StudentHometaskCard();
+							card.setStudentId(student.getKey().getId());
+							card.setTaskId(task.getKey().getId());
+							card.setMark(0.0F);
+							card.save();
+						}
+					}
 					resp.sendRedirect("/student?id=" + student.getKey().getId());
 				}
 			}

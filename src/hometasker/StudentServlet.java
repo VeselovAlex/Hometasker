@@ -1,7 +1,6 @@
 package hometasker;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.util.List;
 
 import hometasker.data.Hometask;
@@ -72,12 +71,4 @@ public class StudentServlet extends HttpServlet {
 		}
 	}
 	
-	public void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException {
-		Student student = new Student(req.getParameter("surname"), req.getParameter("first_name"), req.getParameter("last_name"));
-		student.setBirthDate(Date.valueOf(req.getParameter("b_date")));
-		student.setGroupId(new Long(req.getParameter("group")).longValue());
-		student.save();
-		resp.sendRedirect("/hometasker");
-	}
 }

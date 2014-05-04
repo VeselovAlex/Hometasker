@@ -18,6 +18,7 @@ public class AddGroupServlet extends HttpServlet {
 		String groupFormHTML = "<form action = \"/addgroup\" method = \"post\">"
 						+ "Number: <input type = \"text\" name = \"group_num\"><br>"
 						+ "Subgroup:  <input type = \"text\" name = \"subgroup\"><br>"
+						+ "<input type = \"hidden\" name = \"teacher_id\" value = " + req.getParameter("teacher_id") + ">"
 						+ "<input type = \"submit\" value = \"Add\">"
 						+ "<input type = \"reset\" value = \"Clear\">"
 						+ "</form>";
@@ -49,8 +50,9 @@ public class AddGroupServlet extends HttpServlet {
 				System.out.println("Exception in snum");
 				resp.sendRedirect("/addgroup");
 			}
-		
-		group.setTeacherId(1L);
+		String teacher_id = req.getParameter("teacher_id");
+		if (teacher_id != null)
+			group.setTeacherId(new Long(teacher_id).longValue());
 		group.save();
 		resp.sendRedirect("/groups");
 	}

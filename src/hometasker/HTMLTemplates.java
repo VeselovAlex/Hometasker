@@ -8,4 +8,8 @@ public class HTMLTemplates {
 				+ "</ul>"
 				+ "</header>";
 	}
+	
+	public static String createGroupViewURL(long id) {
+		return "<a href = \"/group?grId=" + id + "\">View</a>";
+	}
 }

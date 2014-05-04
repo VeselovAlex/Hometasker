@@ -1,6 +1,7 @@
 package hometasker;
 
 import hometasker.data.Group;
+import hometasker.data.Teacher;
 
 import java.io.IOException;
 import java.util.List;
@@ -9,17 +10,25 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.datastore.KeyFactory;
+
 @SuppressWarnings("serial")
-public class GroupServlet extends HttpServlet {
+public class TeacherServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		resp.setContentType("text/html");
-		resp.getWriter().println("<h1>Groups:</h1>");
 		
-		List<Group> groups = Group.getAll();
+		long id = new Long(req.getParameter("id")).longValue(); 
+		Teacher teacher = Teacher.get(KeyFactory.createKey("Teacher", id));
+		
+		resp.getWriter().println("<h1>Teacher : " + teacher.getSurname() + " " + teacher.getFirstName() + " " + teacher.getLastName() + "</h1><br>");
+		
+		resp.getWriter().println("<h2>Groups </h2><br>");
+		
+		List<Group> groups = Group.getByTeacher(id);
 		
 		if (groups.isEmpty())
-			resp.getWriter().println("There is no group added yet. Would you like to <a href = \"/addgroup\">add</a> the one?");
+			resp.getWriter().println("There is no group added yet. Would you like to <a href = \"/addgroup?teacher_id=" + id + "\">add</a> the one?");
 		else {
 			String tableHeaderHTML = "<table border = 1>"
 							 + "<caption>All groups</caption>"
@@ -37,10 +46,8 @@ public class GroupServlet extends HttpServlet {
 				resp.getWriter().println(tableRowHTML);
 			}
 			resp.getWriter().println("</table>");
-			resp.getWriter().println("<br><h2><a href = \"/addgroup\">Add new group</a></h2>");
+			resp.getWriter().println("<br><h2><a href = \"/addgroup?teacher_id=" + id + "\">Add new group</a></h2>");
 			
 		}
 	}
-	
-	
 }
