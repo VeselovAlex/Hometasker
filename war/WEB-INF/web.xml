@@ -8,7 +8,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>Hometask</servlet-name>
 		<servlet-class>hometasker.HometaskServlet</servlet-class>
 	</servlet>
-		<servlet>
+	<servlet>
+		<servlet-name>Login</servlet-name>
+		<servlet-class>hometasker.LoginServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>Register</servlet-name>
+		<servlet-class>hometasker.RegisterServlet</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>Student</servlet-name>
 		<servlet-class>hometasker.StudentServlet</servlet-class>
 	</servlet>
@@ -43,6 +51,14 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet-mapping>
 		<servlet-name>Hometask</servlet-name>
 		<url-pattern>/hometask</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Login</servlet-name>
+		<url-pattern>/login</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Register</servlet-name>
+		<url-pattern>/register</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>Student</servlet-name>
