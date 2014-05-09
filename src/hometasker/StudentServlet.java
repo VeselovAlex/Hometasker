@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.util.List;
 
 import hometasker.data.Hometask;
+import hometasker.data.HometaskerUserService;
 import hometasker.data.Student;
 import hometasker.data.StudentHometaskCard;
 import hometasker.data.Task;
+import hometasker.data.HometaskerUser.UserType;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,14 +32,16 @@ public class StudentServlet extends HttpServlet {
 		resp.getWriter().println("<h2>Hometask progress: </h2><br>");
 		
 		List<Hometask> hometasks = Hometask.getByGroupId(student.getGroupId());
+		UserType user = new HometaskerUserService().getCurrentUser().getUserType();
+		boolean authorized = user == UserType.TEACHER || user == UserType.ADMIN;
 		
 		if (hometasks.isEmpty())
 			resp.getWriter().println("There is no hometask added yet.");
 		else {
 			for (Hometask hometask : hometasks) {
 				
-				String htHeader = "<h3>Hometask" + hometask.getHometaskNum() +":	<a href = \"/updstudentprogress?sid=" + id
-								+"&htid=" + hometask.getKey().getId() + "\">Edit</a></h3>";
+				String htHeader = "<h3>Hometask" + hometask.getHometaskNum() + (authorized ? ":	<a href = \"/updstudentprogress?sid=" + id
+								+"&htid=" + hometask.getKey().getId() + "\">Edit</a>" : "") +"</h3>";
 				
 				List<Task> tasks = hometask.getAllTasks();	
 				

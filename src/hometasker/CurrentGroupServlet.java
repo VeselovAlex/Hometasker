@@ -2,7 +2,9 @@ package hometasker;
 
 import hometasker.data.Group;
 import hometasker.data.Hometask;
+import hometasker.data.HometaskerUserService;
 import hometasker.data.Student;
+import hometasker.data.HometaskerUser.UserType;
 
 import java.io.IOException;
 import java.util.List;
@@ -37,7 +39,7 @@ public class CurrentGroupServlet extends HttpServlet {
 		List<Student> students = Student.getByGroup(id);
 		
 		if (students.isEmpty())
-			resp.getWriter().println("There is no student in group added yet. Would you like to <a href = \"/addstudent?grId=" + id +"\">add</a> the one?");
+			resp.getWriter().println("There is no student in group added yet.");
 		else {
 			String tableHeaderHTML = "<table border = 1>"
 							 + "<caption>All students</caption>"
@@ -56,16 +58,18 @@ public class CurrentGroupServlet extends HttpServlet {
 							 +  "</td><td>" + student.getSurname() + "</td><td>" + createStudentViewURL(student.getKey().getId()) + "</td></tr>";
 				resp.getWriter().println(tableRowHTML);
 			}
-			resp.getWriter().println("</table>");
-			resp.getWriter().println("<br><h2><a href = \"/addstudent?grId=" + id +"\">Add new student</a></h2><br>");
-			
+			resp.getWriter().println("</table>");			
 		}
 		
 		resp.getWriter().println("<h3>Hometasks:</h3><br>");
 		List<Hometask> hometasks = Hometask.getByGroupId(group.getKey().getId());
 		
+		UserType user = new HometaskerUserService().getCurrentUser().getUserType();
+		boolean authorized = user == UserType.TEACHER || user == UserType.ADMIN;
+		
 		if (hometasks.isEmpty())
-			resp.getWriter().println("There is no hometask added yet. Would you like to <a href = \"/addhometask?grId=" + id +"\">add</a> the one?");
+			resp.getWriter().println("There is no hometask added yet." + (authorized ? " Would you like to <a href = \"/addhometask?grId=" + id +"\">add</a> the one?<br>" 
+																					 : "<br>"));
 		else {
 			String tableHeaderHTML = "<table border = 1>"
 							 + "<caption>All hometasks</caption>"
@@ -84,16 +88,17 @@ public class CurrentGroupServlet extends HttpServlet {
 				resp.getWriter().println(tableRowHTML);
 			}
 			resp.getWriter().println("</table>");
-			resp.getWriter().println("<br><h2><a href = \"/addhometask?grId=" + id +"\">Add new hometask</a></h2>");
+			if (authorized)
+				resp.getWriter().println("<br><h2><a href = \"/addhometask?grId=" + id +"\">Add new hometask</a></h2>");
 			
 		}
 	}
 	
-	private String createHometaskViewURL(long id) {
+	private static final String createHometaskViewURL(long id) {
 		return "<a href = \"/hometask?htId=" + id + "\">View</a>";
 	}
 	
-	private String createStudentViewURL(long id) {
+	private static final String createStudentViewURL(long id) {
 		return "<a href = \"/student?id=" + id + "\">View</a>";
 	}
 }

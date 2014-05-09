@@ -1,7 +1,9 @@
 package hometasker;
 
 import hometasker.data.Hometask;
+import hometasker.data.HometaskerUserService;
 import hometasker.data.Task;
+import hometasker.data.HometaskerUser.UserType;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,8 +28,12 @@ public class HometaskServlet extends HttpServlet {
 		
 		List<Task> tasks= hometask.getAllTasks();
 		
+		UserType user = new HometaskerUserService().getCurrentUser().getUserType();
+		boolean authorized = user == UserType.TEACHER || user == UserType.ADMIN;
+		
 		if (tasks.isEmpty())
-			resp.getWriter().println("There is no task in group added yet. Would you like to <a href = \"/addtask?htId=" + htId + "\">add</a> the one?");
+			resp.getWriter().println("There is no task in group added yet." + (authorized ? " Would you like to <a href = \"/addtask?htId=" + htId + "\">add</a> the one?"
+																						  : "<br>"));
 		else {
 			String tableHeaderHTML = "<table border = 1 width = 200>"
 							 + "<caption>All tasks</caption>"
@@ -45,7 +51,8 @@ public class HometaskServlet extends HttpServlet {
 				resp.getWriter().println("</td></tr>");
 			}
 			resp.getWriter().println("</table>");
-			resp.getWriter().println("<br><h2><a href = \"/addtask?htId=" + htId + "\">Add new task</a></h2><br>");
+			if (authorized)
+				resp.getWriter().println("<br><h2><a href = \"/addtask?htId=" + htId + "\">Add new task</a></h2><br>");
 			
 		}
 	}

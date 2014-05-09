@@ -19,7 +19,7 @@ public class GroupServlet extends HttpServlet {
 		List<Group> groups = Group.getAll();
 		
 		if (groups.isEmpty())
-			resp.getWriter().println("There is no group added yet. Would you like to <a href = \"/addgroup\">add</a> the one?");
+			resp.getWriter().println("There is no group added yet.");
 		else {
 			String tableHeaderHTML = "<table border = 1>"
 							 + "<caption>All groups</caption>"
@@ -37,8 +37,6 @@ public class GroupServlet extends HttpServlet {
 				resp.getWriter().println(tableRowHTML);
 			}
 			resp.getWriter().println("</table>");
-			resp.getWriter().println("<br><h2><a href = \"/addgroup\">Add new group</a></h2>");
-			
 		}
 	}
 	

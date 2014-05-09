@@ -1,21 +1,27 @@
-<!-- Indices written at Sun, 4 May 2014 17:12:40 MSK -->
+<!-- Indices written at Fri, 9 May 2014 13:30:33 MSK -->
 
 <datastore-indexes>
 
-    <!-- Used 2 times in query history -->
+    <!-- Used 5 times in query history -->
     <datastore-index kind="Group" ancestor="false" source="auto">
-    	<property name="teacherId" direction="asc"/>
         <property name="groupNum" direction="asc"/>
         <property name="subgroupNum" direction="asc"/>
     </datastore-index>
 
-    <!-- Used 2 times in query history -->
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="Group" ancestor="false" source="auto">
+        <property name="teacherId" direction="asc"/>
+        <property name="groupNum" direction="asc"/>
+        <property name="subgroupNum" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 8 times in query history -->
     <datastore-index kind="Hometask" ancestor="false" source="auto">
         <property name="groupId" direction="asc"/>
         <property name="htNum" direction="asc"/>
     </datastore-index>
 
-    <!-- Used 3 times in query history -->
+    <!-- Used 2 times in query history -->
     <datastore-index kind="Task" ancestor="false" source="auto">
         <property name="hometaskId" direction="asc"/>
         <property name="taskNum" direction="asc"/>
