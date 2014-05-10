@@ -23,6 +23,7 @@ public class AddStudentServlet extends HttpServlet {
 							+ "Surname:     <input type = \"text\" name = \"surname\" value  = \"Surname\"><br>"
 							+ "First name:  <input type = \"text\" name = \"first_name\" value  = \"First name\"><br>"
 							+ "Last name: <input type = \"text\" name = \"last_name\" value  = \"Last name\"><br>"
+							+ "Date format yyyy-mm-dd<br>"
 							+ "Birth date:  <input type = \"text\" name = \"b_date\"><br>"
 							+ "<input type = \"hidden\" name = \"group\" value = " + req.getParameter("grId") + ">"
 							+ "<input type = \"submit\" value = \"Add\">"

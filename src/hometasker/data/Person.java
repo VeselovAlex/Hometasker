@@ -36,6 +36,8 @@ public class Person implements Serializable {
 	private Date birthDate;
 	@Basic
 	private String nickname;
+	//@Basic
+	private String email;
 	
 	Person(String surname, String firstName, String lastname) {
 		this.surname = surname;
@@ -83,6 +85,14 @@ public class Person implements Serializable {
 		this.nickname = nickname;
 	}
 	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public static Person getByNickname(String nickname) {
 		EntityManager em = EMFSingleton.get().createEntityManager();
 		try {

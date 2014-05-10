@@ -15,7 +15,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.TypedQuery;
 
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.Link;
 
 @SuppressWarnings("serial")
 @Entity(name = "Card")
@@ -25,6 +24,8 @@ import com.google.appengine.api.datastore.Link;
 	@NamedQuery(name = "Card.getByStudentAndTaskId", query = "SELECT c FROM Card c WHERE c.taskId = :taskId AND c.studentId = :sId")
 })
 public class StudentHometaskCard implements Serializable {
+	public enum TaskProgress {NOT_STARTED, NOT_VIEWED, MISTAKE, COMPLETED, ERROR}
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Key key;
@@ -32,7 +33,9 @@ public class StudentHometaskCard implements Serializable {
 	private long taskId;
 	private float mark;
 	@Basic
-	private Link taskFileUrl;
+	private String taskFileUrl;
+	@Basic
+	private TaskProgress status = TaskProgress.NOT_STARTED;
 	
 	public Key getKey() {
 		return this.key;
@@ -62,12 +65,21 @@ public class StudentHometaskCard implements Serializable {
 		this.mark = mark;
 	}
 
-	public Link getTaskFileUrl() {
+	public TaskProgress getStatus() {
+		return status;
+	}
+
+	public void setStatus(TaskProgress status) {
+		this.status = status;
+	}
+
+	public String getTaskFileUrl() {
 		return taskFileUrl;
 	}
 
-	public void setTaskFileUrl(Link taskFileUrl) {
+	public void setTaskFileUrl(String taskFileUrl) {
 		this.taskFileUrl = taskFileUrl;
+		this.setStatus(TaskProgress.NOT_VIEWED);
 	}
 
 	public static List<StudentHometaskCard> getByStudentId(long id) {

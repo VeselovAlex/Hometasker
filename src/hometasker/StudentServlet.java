@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import hometasker.data.Hometask;
+import hometasker.data.HometaskerUser;
 import hometasker.data.HometaskerUserService;
 import hometasker.data.Student;
 import hometasker.data.StudentHometaskCard;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.KeyFactory;
 
 @SuppressWarnings("serial")
@@ -32,8 +34,8 @@ public class StudentServlet extends HttpServlet {
 		resp.getWriter().println("<h2>Hometask progress: </h2><br>");
 		
 		List<Hometask> hometasks = Hometask.getByGroupId(student.getGroupId());
-		UserType user = new HometaskerUserService().getCurrentUser().getUserType();
-		boolean authorized = user == UserType.TEACHER || user == UserType.ADMIN;
+		HometaskerUser user = new HometaskerUserService().getCurrentUser();
+		boolean authorized = user.getUserType() == UserType.TEACHER || user.getUserType() == UserType.ADMIN;
 		
 		if (hometasks.isEmpty())
 			resp.getWriter().println("There is no hometask added yet.");
@@ -48,7 +50,8 @@ public class StudentServlet extends HttpServlet {
 				String tableHeader = "<table border = 1 width = 200>"
 						 + "<caption>" + htHeader + "</caption>"
 						 + "<tr>";
-				String tableRow = "<tr>";
+				String tableRow1 = "<tr>";
+				String tableRow2 = "<tr>";
 				int i = 0;
 				
 				for (Task task : tasks) {
@@ -67,10 +70,25 @@ public class StudentServlet extends HttpServlet {
 						cellColor = "lightgreen";
 					
 					tableHeader += "<th>" + (++i) + "</th>";
-					tableRow += "<td bgcolor=\""+ cellColor + "\">" + mark + "</td>";
+					tableRow1 += "<td bgcolor=\""+ cellColor + "\">" + mark + "</td>";
+					
+					boolean isAuthStudent = user.getUserType() == UserType.STUDENT && user.getPerson().getKey().getId() == id; 
+					
+					String uploadForm = "<form action=\"" + BlobstoreServiceFactory.getBlobstoreService().createUploadUrl("/file") 
+							+ "\" method=\"post\" enctype=\"multipart/form-data\">"
+							+ "<input type=\"file\" name=\"filename\"><br>"
+							+ "<input type=\"hidden\" name=\"card_id\" value=" + card.getKey().getId() + ">"
+			                + "<input type=\"submit\" value=\"Submit\">";
+					
+					if (card.getTaskFileUrl() == null) {
+						tableRow2 += "<td>" + (isAuthStudent ? uploadForm : "No file") + "</td>";
+					} else {
+						tableRow2 += "<td><a href = \"" + card.getTaskFileUrl() + "\">View</a><br>" + (isAuthStudent ? uploadForm : "") + "</td>";
+					}
+						
 				}
 				
-				resp.getWriter().println(tableHeader + "</tr>" + tableRow + "</tr>");	
+				resp.getWriter().println(tableHeader + "</tr>" + tableRow1 + "</tr>" + tableRow2 + "</tr>");	
 			} 
 		}
 	}

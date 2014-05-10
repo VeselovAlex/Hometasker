@@ -28,6 +28,7 @@ public class RegisterServlet extends HttpServlet {
 							+ "Surname:     <input type = \"text\" name = \"surname\" value  = \"Surname\"><br>"
 							+ "First name:  <input type = \"text\" name = \"first_name\" value  = \"First name\"><br>"
 							+ "Last name: <input type = \"text\" name = \"last_name\" value  = \"Last name\"><br>"
+							+ "Date format yyyy-mm-dd<br>"
 							+ "Birth date:  <input type = \"text\" name = \"b_date\"><br>";
 		
 		String formFooter = "<input type = \"submit\" value = \"Add\">"
@@ -87,6 +88,7 @@ public class RegisterServlet extends HttpServlet {
 					student.setLastName(lname);
 					student.setSurname(sname);
 					student.setNickname(new HometaskerUserService().getUserService().getCurrentUser().getNickname());
+					student.setEmail(new HometaskerUserService().getUserService().getCurrentUser().getEmail());
 					student.setGroupId(curGroup.getKey().getId());
 					student.save();
 					//Insert pages for home tasks
@@ -112,6 +114,7 @@ public class RegisterServlet extends HttpServlet {
 			teacher.setLastName(lname);
 			teacher.setSurname(sname);
 			teacher.setNickname(new HometaskerUserService().getUserService().getCurrentUser().getNickname());
+			teacher.setEmail(new HometaskerUserService().getUserService().getCurrentUser().getEmail());
 			teacher.save();
 			resp.sendRedirect("/teacher?id=" + teacher.getKey().getId());
 		}
