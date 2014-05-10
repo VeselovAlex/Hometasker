@@ -20,6 +20,7 @@ public class AddHometaskServlet extends HttpServlet {
 		String hometaskFormHTML = "<form action = \"/addhometask\" method = \"post\">"
 						+ "Number: <input type = \"text\" name = \"hometask_num\" value  = 1><br>"
 						+ "Subject: <input type = \"text\" name = \"subj\"><br>"
+						+ "Date format yyyy-mm-dd<br>"
 						+ "Start:  <input type = \"text\" name = \"start_date\"><br>"
 						+ "End:    <input type = \"text\" name = \"end_date\"><br>"
 						+ "<input type = \"hidden\" name = \"grId\" value = " + req.getParameter("grId") +">"
@@ -47,7 +48,11 @@ public class AddHometaskServlet extends HttpServlet {
 		
 		hometask.save();
 		
-		resp.sendRedirect("/group?grId=" + grId);
+		try {
+			MessagingService.sendNewHometaskMsg(grId);
+		} finally {
+			resp.sendRedirect("/group?grId=" + grId);
+		}
 		
 	}
 }
